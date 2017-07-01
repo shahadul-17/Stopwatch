@@ -21,7 +21,7 @@ public class Frame extends JFrame implements StopwatchTaskHandler, ActionListene
 	private static final String TITLE = "Stopwatch";
 	
 	private JPanel contentPane;
-	private JLabel labelTime;
+	private JLabel labelHoursMinutesSeconds, labelMilliseconds;
 	private JButton buttonStartPause, buttonStop;
 	
 	private Stopwatch stopwatch;
@@ -34,7 +34,7 @@ public class Frame extends JFrame implements StopwatchTaskHandler, ActionListene
 	
 	private void initialize() {
 		setTitle(TITLE);
-		setSize(500, 235);
+		setSize(500, 183);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -44,19 +44,25 @@ public class Frame extends JFrame implements StopwatchTaskHandler, ActionListene
 		contentPane.setLayout(null);
 		setContentPane(contentPane);
 		
-		labelTime = new JLabel("00:00:00");
-		labelTime.setFont(new Font("Arial", Font.PLAIN, 110));
-		labelTime.setHorizontalAlignment(SwingConstants.CENTER);
-		labelTime.setBounds(10, 10, 474, 154);
-		contentPane.add(labelTime);
+		labelHoursMinutesSeconds = new JLabel("00:00:00");
+		labelHoursMinutesSeconds.setFont(new Font("Arial", Font.PLAIN, 105));
+		labelHoursMinutesSeconds.setHorizontalAlignment(SwingConstants.LEFT);
+		labelHoursMinutesSeconds.setBounds(10, 10, 406, 100);
+		contentPane.add(labelHoursMinutesSeconds);
+		
+		labelMilliseconds = new JLabel("00");
+		labelMilliseconds.setFont(new Font("Arial", Font.PLAIN, 60));
+		labelMilliseconds.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelMilliseconds.setBounds(418, 46, 66, 60);
+		contentPane.add(labelMilliseconds);
 		
 		buttonStartPause = new JButton("Start");
-		buttonStartPause.setBounds(296, 175, 89, 23);
+		buttonStartPause.setBounds(296, 121, 89, 23);
 		buttonStartPause.addActionListener(this);
 		contentPane.add(buttonStartPause);
 		
 		buttonStop = new JButton("Stop");
-		buttonStop.setBounds(395, 175, 89, 23);
+		buttonStop.setBounds(395, 121, 89, 23);
 		buttonStop.addActionListener(this);
 		contentPane.add(buttonStop);
 	}
@@ -66,7 +72,6 @@ public class Frame extends JFrame implements StopwatchTaskHandler, ActionListene
 		if (event.getSource().equals(buttonStartPause)) {
 			if (buttonStartPause.getText().equals("Start")) {
 				stopwatch.start();
-				
 				buttonStartPause.setText("Pause");
 			}
 			else {
@@ -82,7 +87,10 @@ public class Frame extends JFrame implements StopwatchTaskHandler, ActionListene
 
 	@Override
 	public void stopwatchTaskHandled() {
-		labelTime.setText(stopwatch.toString());
+		String[] splittedTime = stopwatch.toString().split("#");
+		
+		labelMilliseconds.setText(splittedTime[0]);
+		labelHoursMinutesSeconds.setText(splittedTime[1]);
 	}
 	
 }
